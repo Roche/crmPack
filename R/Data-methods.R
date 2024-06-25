@@ -93,6 +93,119 @@ setMethod(
   }
 )
 
+## Data ----
+
+#' Plot Method for the [`Data`] Class
+#'
+#' A method that creates a profile plot for [`Data`] object.
+#'
+#' @param x (`Data`)\cr object we want to plot, which includes all evaluable subjects.
+#' @param x_NE A data.frame, which includes all non-evaluable subjects.
+#' @param unit A string specifying the dose unit used in the trials, for example "mg/kg".
+#'
+#' @return The [`ggplot2`] object.
+#'
+#' @examples
+#' \dontrun{
+#' dose_grid <- c(10, 15, 30, 45, 60, 80)
+#' unit <- "mg/kg"
+#' ## Specify the observed data
+#' data <- Data(
+#'   x = c(rep(10, 3), rep(15, 3), rep(30, 3)),
+#'   y = c(rep(0, 3), rep(0, 2), 1, rep(0, 2), 1),
+#'   cohort = c(rep(1, 3), rep(2, 3), rep(3, 3)),
+#'   doseGrid = dose_grid,
+#'   ID = 1:9
+#' )
+#' ## Specify the NON-evaluable data
+#' ## (if none, set data_NE <- data.frame(NULL))
+#' data_NE <- data.frame(
+#'   IDs = 10,
+#'   doses = 30,
+#'   dlts = 2,
+#'   cohorts = 3
+#' )
+#'
+#' plot(
+#'   x = data,
+#'   x_NE = data_NE,
+#'   unit = unit
+#' )
+#' }
+#' @source This function uses \code{ggplot} function from \code{ggplot2}
+#' R package.
+#' @export
+setGeneric(
+  name = "profiles",
+  def = function(x, xNE, unit, ...) {
+    standardGeneric("profiles")
+  }
+)
+setMethod(
+  f = "profiles",
+  signature = signature(x = "Data", xNE = "data.frame", unit = "character"),
+  definition = function(x, xNE, unit, ...) {
+    ID <- c(x@ID, xNE$IDs)
+    dose <- c(x@x, xNE$doses)
+    cohort <- c(x@cohort, xNE$cohorts)
+    DLT <- c(x@y, xNE$dlts)
+
+    df <- data.frame(
+      "ID" = ID,
+      "dose" = dose,
+      "DLT" = factor(DLT,
+        levels = c("0", "1", "2"),
+        labels = c("DLT No", "DLT Yes", "Not evaluable")
+      ),
+      "cohort" = paste("Cohort", cohort)
+    )
+    df <- df[order(df$ID), ]
+
+    p <- ggplot(data = df) +
+      geom_point(
+        aes(
+          x = factor(ID, levels = unique(ID[order(cohort, ID)])),
+          y = dose,
+          shape = DLT,
+          color = DLT
+        ),
+        size = 2
+      ) +
+      scale_shape_manual(values = c(
+        "DLT No" = 19, "DLT Yes" = 17,
+        "Not evaluable" = 0
+      ), drop = FALSE) +
+      scale_color_manual(
+        values = c(
+          "DLT No" = "black",
+          "DLT Yes" = "red",
+          "Not evaluable" = "blue"
+        ),
+        drop = FALSE
+      ) +
+      scale_x_discrete(breaks = df$ID, labels = sort(df$ID)) +
+      scale_y_continuous(
+        limits = c(0, max(x@doseGrid)),
+        breaks = x@doseGrid,
+        labels = x@doseGrid
+      ) +
+      facet_wrap(. ~ cohort, strip.position = "bottom", scales = "free_x") +
+      ggtitle("DLT Profile Plot") +
+      xlab("Subject IDs") +
+      ylab(paste0("Dose (", unit, ")")) +
+      theme_bw() +
+      theme(plot.title = element_text(hjust = 0.5)) +
+      theme(legend.title = element_blank()) +
+      theme(
+        legend.background = element_blank(),
+        legend.box.background = element_rect(colour = "black"),
+        axis.text.x = element_text(angle = 45, hjust = 1)
+      )
+
+    p
+  }
+)
+
 ## DataDual ----
 
 #' Plot Method for the [`DataDual`] Class
