@@ -479,3 +479,92 @@ test_that("PseudoDualSimulations user constructor argument names are as expected
     ordered = TRUE
   )
 })
+
+# PseudoDualFlexiSimulations-class ----
+test_that("PseudoDualFlexiSimulations can be generated without error and return a valid object", {
+  result <- expect_silent(.PseudoDualFlexiSimulations())
+  expect_valid(result, "PseudoDualFlexiSimulations")
+})
+
+test_that("PseudoDualFlexiSimulations can be instantiated using the constructor", {
+  fit_eff <- list(c(0.1, 0.2), c(0.3, 0.4))
+  final_gstar_estimates <- c(0.1, 0.2)
+  final_gstar_at_dose_grid <- c(0.3, 0.4)
+  final_gstar_cis <- list(c(0.1, 0.2), c(0.3, 0.4))
+  final_gstar_ratios <- c(0.1, 0.2)
+  final_optimal_dose <- c(0.5, 0.6)
+  final_optimal_dose_at_dose_grid <- c(0.7, 0.8)
+  sigma2_est <- c(0.01, 0.02)
+  sigma2_beta_west <- c(0.03, 0.04)
+
+  fit <- list(c(0.1, 0.2), c(0.3, 0.4))
+  final_td_target_during_trial_estimates <- c(0.5, 0.6)
+  final_td_target_end_of_trial_estimates <- c(0.7, 0.8)
+  final_td_target_during_trial_at_dose_grid <- c(0.9, 1.0)
+  final_td_target_end_of_trial_at_dose_grid <- c(1.1, 1.2)
+  final_tdeot_cis <- list(c(0.1, 0.2), c(0.3, 0.4))
+  final_tdeot_ratios <- c(0.5, 0.6)
+  final_cis <- list(c(0.7, 0.8), c(0.9, 1.0))
+  final_ratios <- c(1.1, 1.2)
+  stop_report <- matrix(TRUE, nrow = 2)
+  stop_reasons <- list("A", "B")
+
+  data <- list(
+    Data(
+      x = 1:3,
+      y = c(0, 1, 0), # Adjusted values to meet the constraint
+      doseGrid = 1:3,
+      ID = 1L:3L,
+      cohort = 1L:3L
+    ),
+    Data(
+      x = 4:6,
+      y = c(1, 0, 1), # Adjusted values to meet the constraint
+      doseGrid = 4:6,
+      ID = 1L:3L,
+      cohort = 1L:3L
+    )
+  )
+
+  doses <- c(1, 2)
+  seed <- as.integer(123)
+
+  sim_obj <- PseudoDualFlexiSimulations(
+    fit_eff = fit_eff,
+    final_gstar_estimates = final_gstar_estimates,
+    final_gstar_at_dose_grid = final_gstar_at_dose_grid,
+    final_gstar_cis = final_gstar_cis,
+    final_gstar_ratios = final_gstar_ratios,
+    final_optimal_dose = final_optimal_dose,
+    final_optimal_dose_at_dose_grid = final_optimal_dose_at_dose_grid,
+    sigma2_est = sigma2_est,
+    sigma2_beta_west = sigma2_beta_west,
+    fit = fit,
+    data = data,
+    doses = doses,
+    final_td_target_during_trial_estimates = final_td_target_during_trial_estimates,
+    final_td_target_end_of_trial_estimates = final_td_target_end_of_trial_estimates,
+    final_td_target_during_trial_at_dose_grid = final_td_target_during_trial_at_dose_grid,
+    final_td_target_end_of_trial_at_dose_grid = final_td_target_end_of_trial_at_dose_grid,
+    final_tdeot_cis = final_tdeot_cis,
+    final_tdeot_ratios = final_tdeot_ratios,
+    final_cis = final_cis,
+    final_ratios = final_ratios,
+    stop_report = stop_report,
+    stop_reasons = stop_reasons,
+    seed = seed
+  )
+
+  expect_valid(sim_obj, "PseudoDualFlexiSimulations")
+  expect_identical(sim_obj@sigma2_beta_west, sigma2_beta_west)
+})
+
+test_that("PseudoDualFlexiSimulations user constructor argument names", {
+  expect_function(
+    PseudoDualFlexiSimulations,
+    args = c(
+      "sigma2_beta_west", "..."
+    ),
+    ordered = TRUE
+  )
+})

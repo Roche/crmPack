@@ -138,15 +138,15 @@ v_pseudo_dual_simulations <- function(object) {
 }
 
 #' @describeIn v_pseudo_simulations validates that the [`PseudoDualFlexiSimulations`]
-#' object contains valid `sigma2betaWest` vector of the final posterior mean
+#' object contains valid `sigma2_beta_west` vector of the final posterior mean
 #' sigma2betaW estimates.`FinalGstarEstimates` , `FinalGstarAtDoseGrid`,
 #'
 v_pseudo_dual_flex_simulations <- function(object) {
   v <- Validate()
   nSims <- length(object@data)
   v$check(
-    identical(length(object@sigma2betaWest), nSims),
-    "sigma2betaWest has to have same length as data"
+    identical(length(object@sigma2_beta_west), nSims),
+    "sigma2_beta_west has to have same length as data"
   )
   v$result()
 }

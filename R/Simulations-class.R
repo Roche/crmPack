@@ -702,48 +702,41 @@ PseudoDualSimulations <- function(fit_eff,
   stop("Class PseudoDualSimulations cannot be instantiated directly. Please use a subclass.")
 }
 
-# nolint start
 # PseudoDualFlexiSimulations ----
 
 ## class ----
 
-## -------------------------------------------------------------------------------
-## Class for Pseudo simulation using DLE and efficacy responses using 'EffFlex' efficacy model
-## -----------------------------------------------------------------------------------
-##' This is a class which captures the trial simulations design using both the
-##' DLE and efficacy responses. The design of model from \code{\linkS4class{ModelTox}}
-##' class and the efficacy model from \code{\linkS4class{EffFlexi}} class
-##'  It contains all slots from
-##' \code{\linkS4class{GeneralSimulations}}, \code{\linkS4class{PseudoSimulations}}
-##' and \code{\linkS4class{PseudoDualSimulations}} object.
-##' In comparison to the parent class \code{\linkS4class{PseudoDualSimulations}},
-##' it contains additional slots to
-##' capture the sigma2betaW estimates.
-##'
-##' @slot sigma2betaWest the vector of the final posterior mean sigma2betaW estimates
-##'
-##' @export
-##' @keywords class
+#' `PseudoDualFlexiSimulations`
+#'
+#' @description `r lifecycle::badge("stable")`
+#' This class captures the trial simulations design using both the DLE and
+#' efficacy responses using [`EffFlexi`] efficacy model.
+#' It extends [`PseudoDualSimulations`] by adding the capability to capture the sigma2betaW estimates.
+#'
+#' @slot sigma2_beta_west (`numeric`)\cr the vector of the final posterior mean sigma2betaW estimates
+#' @aliases PseudoDualFlexiSimulations
+#' @export
 .PseudoDualFlexiSimulations <-
   setClass(
     Class = "PseudoDualFlexiSimulations",
-    representation(sigma2betaWest = "numeric"),
-    prototype(sigma2betaWest = c(0.001, 0.002)),
-    contains = "PseudoDualSimulations",
-    validity = v_pseudo_dual_flex_simulations
+    slots = c(sigma2_beta_west = "numeric"),
+    prototype = prototype(sigma2_beta_west = c(0.001, 0.002)),
+    contains = "PseudoDualSimulations"
   )
 
-validObject(.PseudoDualFlexiSimulations())
+## constructor ----
 
-##' Initialization function for 'PseudoDualFlexiSimulations' class
-##' @param sigma2betaWest please refer to \code{\linkS4class{PseudoDualFlexiSimulations}} class object
-##' @param \dots additional parameters from \code{\linkS4class{PseudoDualSimulations}}
-##' @return the \code{\linkS4class{PseudoDualFlexiSimulations}} object
-PseudoDualFlexiSimulations <- function(sigma2betaWest,
+#' @rdname PseudoDualFlexiSimulations-class
+#'
+#' @param sigma2_beta_west (`numeric`)\cr the vector of the final posterior mean sigma2betaW estimates
+#' @param \dots additional parameters from [`PseudoDualSimulations`]
+#'
+#' @export
+PseudoDualFlexiSimulations <- function(sigma2_beta_west,
                                        ...) {
   start <- PseudoDualSimulations(...)
   .PseudoDualFlexiSimulations(start,
-    sigma2betaWest = sigma2betaWest
+    sigma2_beta_west = sigma2_beta_west
   )
 }
 
@@ -753,9 +746,10 @@ PseudoDualFlexiSimulations <- function(sigma2betaWest,
 #' @note Typically, end users will not use the `.DefaultPseudoFlexiSimulations()` function.
 #' @export
 .DefaultPseudoDualFlexiSimulations <- function() {
-  stop(paste0("Class PseudoFlexiSimulations cannot be instantiated directly.  Please use one of its subclasses instead."))
+  stop("Class PseudoFlexiSimulations cannot be instantiated directly. Please use one of its subclasses instead.")
 }
 
+# nolint start
 ## -------------------------------------------------------------------------------------------------------
 ## ================================================================================================
 

@@ -39,7 +39,7 @@ contains valid \code{fit_eff}, \code{final_gstar_estimates} , \code{final_gstar_
 object and valid \code{sigma2_est} simulations.
 
 \item \code{v_pseudo_dual_flex_simulations()}: validates that the \code{\link{PseudoDualFlexiSimulations}}
-object contains valid \code{sigma2betaWest} vector of the final posterior mean
+object contains valid \code{sigma2_beta_west} vector of the final posterior mean
 sigma2betaW estimates.\code{FinalGstarEstimates} , \code{FinalGstarAtDoseGrid},
 
 }}

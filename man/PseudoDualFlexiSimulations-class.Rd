@@ -4,37 +4,31 @@
 \name{PseudoDualFlexiSimulations-class}
 \alias{PseudoDualFlexiSimulations-class}
 \alias{.PseudoDualFlexiSimulations}
+\alias{PseudoDualFlexiSimulations}
 \alias{.DefaultPseudoDualFlexiSimulations}
-\title{This is a class which captures the trial simulations design using both the
-DLE and efficacy responses. The design of model from \code{\linkS4class{ModelTox}}
-class and the efficacy model from \code{\linkS4class{EffFlexi}} class
-It contains all slots from
-\code{\linkS4class{GeneralSimulations}}, \code{\linkS4class{PseudoSimulations}}
-and \code{\linkS4class{PseudoDualSimulations}} object.
-In comparison to the parent class \code{\linkS4class{PseudoDualSimulations}},
-it contains additional slots to
-capture the sigma2betaW estimates.}
+\title{\code{PseudoDualFlexiSimulations}}
 \usage{
+PseudoDualFlexiSimulations(sigma2_beta_west, ...)
+
 .DefaultPseudoDualFlexiSimulations()
 }
+\arguments{
+\item{sigma2_beta_west}{(\code{numeric})\cr the vector of the final posterior mean sigma2betaW estimates}
+
+\item{\dots}{additional parameters from \code{\link{PseudoDualSimulations}}}
+}
 \description{
-This is a class which captures the trial simulations design using both the
-DLE and efficacy responses. The design of model from \code{\linkS4class{ModelTox}}
-class and the efficacy model from \code{\linkS4class{EffFlexi}} class
-It contains all slots from
-\code{\linkS4class{GeneralSimulations}}, \code{\linkS4class{PseudoSimulations}}
-and \code{\linkS4class{PseudoDualSimulations}} object.
-In comparison to the parent class \code{\linkS4class{PseudoDualSimulations}},
-it contains additional slots to
-capture the sigma2betaW estimates.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+This class captures the trial simulations design using both the DLE and
+efficacy responses using \code{\link{EffFlexi}} efficacy model.
+It extends \code{\link{PseudoDualSimulations}} by adding the capability to capture the sigma2betaW estimates.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{sigma2betaWest}}{the vector of the final posterior mean sigma2betaW estimates}
+\item{\code{sigma2_beta_west}}{(\code{numeric})\cr the vector of the final posterior mean sigma2betaW estimates}
 }}
 
 \note{
 Typically, end users will not use the \code{.DefaultPseudoFlexiSimulations()} function.
 }
-\keyword{class}

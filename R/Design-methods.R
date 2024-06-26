@@ -3442,7 +3442,7 @@ setMethod("simulate",
           fit = fitDLEList,
           fit_eff = fitEffList,
           sigma2_est = sigma2Estimates,
-          sigma2betaWest = sigma2betaWEstimates,
+          sigma2_beta_west = sigma2betaWEstimates,
           stop_reasons = stopReasons,
           stop_report = stop_report,
           seed = RNGstate

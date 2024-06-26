@@ -2408,7 +2408,7 @@ setMethod("plot",
         ## save the plot
         plotList[[plotIndex <- plotIndex + 1L]] <-
           qplot(factor(0),
-            y = y, data = data.frame(y = x@sigma2betaWest), geom = "boxplot",
+            y = y, data = data.frame(y = x@sigma2_beta_west), geom = "boxplot",
             xlab = "", ylab = "Random walk model variance estimates"
           ) +
           coord_flip() + scale_x_discrete(breaks = NULL)
